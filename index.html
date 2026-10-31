@@ -1,48 +1,103 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VibeTok</title>
 <style>
+* { box-sizing: border-box; }
 body {
   margin: 0;
   background: #101010;
   color: white;
-  font-family: Arial;
-  text-align: center;
+  font-family: Arial, sans-serif;
 }
 header {
-  padding: 20px;
+  background: #181818;
+  padding: 18px;
   color: #ff286b;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: bold;
+  text-align: center;
+  position: sticky;
+  top: 0;
 }
-.video {
-  margin: 20px;
-  padding: 60px 10px;
-  background: #252525;
-  border-radius: 15px;
+.feed { padding: 12px; max-width: 500px; margin: auto; }
+.video-card {
+  margin: 18px 0;
+  background: #222;
+  border-radius: 14px;
+  overflow: hidden;
 }
-button {
+video {
+  width: 100%;
+  display: block;
+  max-height: 650px;
+  background: black;
+}
+.caption { padding: 12px; }
+.upload {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   background: #ff286b;
   color: white;
-  border: 0;
-  padding: 14px 25px;
-  border-radius: 25px;
-  font-size: 17px;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 32px;
 }
-input { margin: 20px; }
+input { display: none; }
 </style>
 </head>
 <body>
+
 <header>❤️ VibeTok</header>
-<h2>Feel the Vibe. Share the Vibe.</h2>
-<div class="video">
+
+<div class="feed" id="feed">
   <h2>Welcome to VibeTok!</h2>
   <p>Your world. Your videos. Your vibe.</p>
-  <input type="file" accept="video/*">
+  <p>Upload your first video below.</p>
 </div>
-<button onclick="alert('Welcome to VibeTok!')">Get Started</button>
-<p>© 2026 VibeTok</p>
+
+<input type="file" id="videoInput" accept="video/*" multiple>
+<button class="upload" onclick="document.getElementById('videoInput').click()">+</button>
+
+<script>
+const input = document.getElementById('videoInput');
+const feed = document.getElementById('feed');
+
+input.addEventListener('change', function() {
+  const files = Array.from(this.files);
+
+  files.forEach(file => {
+    if (!file.type.startsWith('video/')) return;
+
+    const url = URL.createObjectURL(file);
+
+    const card = document.createElement('div');
+    card.className = 'video-card';
+
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+    caption.textContent = '❤️ VibeTok video';
+
+    card.appendChild(video);
+    card.appendChild(caption);
+    feed.appendChild(card);
+  });
+
+  this.value = '';
+});
+</script>
+
 </body>
 </html>
